@@ -40,7 +40,7 @@ def getFiles(request, status=200, **kwargs):
 	# for jpg/jpeg https://pypi.org/project/svglib/ mime: content_type="image/jpg"
 	# path = "/home/auxesis/Pictures/a.png"
 	print request.path
-	pathGET = request.GET['path']
+	pathGET = "/home/auxesis/Pictures/" + request.GET['path']
 	print "GETunicode", pathGET
 	lastExtensionArr = pathGET.split('.')
 	ext = (lastExtensionArr[-1]).lower()
@@ -60,10 +60,12 @@ def getFiles(request, status=200, **kwargs):
 	print 'response:::::',responseFileType,contentType
 	try:
 		if typeOfMedia is 'img':
-			jpgfile = Image.open(pathGET)
-			response = HttpResponse(content_type=contentType)
-			jpgfile.save(response, responseFileType)
-			return response
+			image_data = open(pathGET, "rb").read()
+			return HttpResponse(image_data, content_type=contentType)
+			# jpgfile = Image.open(pathGET)
+			# response = HttpResponse(content_type=contentType)
+			# jpgfile.save(response, responseFileType)
+			# return response
 		else:
 			image_data = open(pathGET, "rb").read()
 			return HttpResponse(image_data, content_type=contentType)
